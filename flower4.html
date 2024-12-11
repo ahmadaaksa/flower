@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animasi Bunga</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 10px;
+            height: 200px;
+            background: #228B22;
+            transform: translateX(-50%);
+        }
+
+        .flower {
+            position: absolute;
+            bottom: 200px;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background-image: url('flwr.webp');
+            background-size: cover;
+            background-position: center;
+            transform: translateX(-50%) scale(0);
+            animation: bloom 3s ease-in-out forwards;
+        }
+
+        @keyframes bloom {
+            0% {
+                transform: translateX(-50%) scale(0);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.2);
+            }
+            100% {
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        .floating-flower {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #ff9a9e, #ff6a6a);
+            border-radius: 50%;
+            animation: float 5s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0;
+            animation: showMessage 3s 3s forwards;
+        }
+
+        @keyframes showMessage {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        #showFlowerBtn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background: #d70039;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #showFlowerBtn:hover {
+            background: #ff4d6d;
+        }
+
+        .flower, .stem, .message {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="stem"></div>
+        <div class="flower"></div>
+        <div class="message">🌹 A Blooming Rose for You 🌹</div>
+        <button id="showFlowerBtn">Show Flower</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const button = document.getElementById('showFlowerBtn');
+        const stem = document.querySelector('.stem');
+        const flower = document.querySelector('.flower');
+        const message = document.querySelector('.message');
+
+        button.addEventListener('click', () => {
+            stem.style.display = 'block';
+            flower.style.display = 'block';
+            message.style.display = 'block';
+
+            // Trigger animations
+            stem.style.animation = 'none';
+            flower.style.animation = 'none';
+            message.style.animation = 'none';
+
+            setTimeout(() => {
+                flower.style.animation = 'bloom 3s ease-in-out forwards';
+                message.style.animation = 'showMessage 3s 3s forwards';
+            }, 0);
+
+            button.style.display = 'none';
+        });
+
+        function createFloatingFlower() {
+            const floatingFlower = document.createElement('div');
+            floatingFlower.classList.add('floating-flower');
+
+            // Set random position and size
+            floatingFlower.style.left = Math.random() * window.innerWidth + 'px';
+            floatingFlower.style.width = floatingFlower.style.height = Math.random() * 20 + 30 + 'px';
+
+            container.appendChild(floatingFlower);
+
+            // Remove flower after animation ends
+            setTimeout(() => {
+                floatingFlower.remove();
+            }, 5000);
+        }
+
+        // Create floating flowers at intervals
+        setInterval(createFloatingFlower, 300);
+    </script>
+</body>
+</html>
